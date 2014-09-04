@@ -72,7 +72,7 @@ end
 
 def download(board_title, link)
 	dest_dir = File.join(ROOT_DIR, board_title)
-	FileUtils.mkdir(dest_dir) unless File.exists? dest_dir	
+	FileUtils.mkdir_p(dest_dir) unless File.exists? dest_dir	
 	dest_file_path = File.join(ROOT_DIR, board_title, link.text.strip)
 	if link.href.index('attach=')
 		attach_id = link.href[link.href.index('attach=')+'attach='.length..-1]
