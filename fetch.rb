@@ -71,6 +71,8 @@ def goto_page(board_page, page_num)
 end
 
 def download(board_title, link)
+	dest_dir = File.join(ROOT_DIR, board_title)
+	FileUtils.mkdir(dest_dir) unless File.exists? dest_dir	
 	dest_file_path = File.join(ROOT_DIR, board_title, link.text.strip)
 	if link.href.index('attach=')
 		attach_id = link.href[link.href.index('attach=')+'attach='.length..-1]
@@ -86,16 +88,11 @@ def download(board_title, link)
 	false
 end
 
-def create_dir_for_board(board_title)
-	FileUtils.mkdir(board_title) unless File.exists? board_title
-end
-
 boards.each do |board|
 	board_title = board[:title]
 	p "board: #{board_title}"
 	catch :jump_to_next_board do
-		board_page = @agent.get("http://heavensculture.com/index.php?board=#{board[:id]}.0")
-		create_dir_for_board(board_title)
+		board_page = @agent.get("http://heavensculture.com/index.php?board=#{board[:id]}.0")		
 		max_page_number = get_last_page_number(board_page)
 		p "last_page: #{max_page_number}"
 		(1..max_page_number).each do |page_num|
