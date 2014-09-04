@@ -16,6 +16,8 @@ ROOT_DIR = ARGV[0]
 page = @agent.get('http://heavensculture.com/')
 
 @db = SQLite3::Database.new( "heavensculture.sqlite" )
+rows = @db.execute( "create table if not exists fetched_docs (attach_id TEXT, file_name TEXT")
+
 
 login_form =  page.form('frmLogin')
 login_form.user = 'tilumi'
